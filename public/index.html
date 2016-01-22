@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <script>
+		function getLocation() {
+		    if (navigator.geolocation) {
+		        navigator.geolocation.getCurrentPosition(showPosition);
+		    } else {
+		    	document.getElementById("demo").innerHTML = "Geolocation is not supported by this browser.";
+		    }
+		}
+		
+		function showPosition(position) {
+			var x = document.getElementById("demo");
+		    x.innerHTML = "Latitude: " + position.coords.latitude + 
+		    "<br>Longitude: " + position.coords.longitude; 
+
+		    var xhr = new XMLHttpRequest(); 
+		    xhr.open("POST", "http://" + window.location.host + "/geo", true);
+			xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+			xhr.send(JSON.stringify({
+					"latitude": position.coords.latitude,
+					"longitude": position.coords.longitude
+			}));
+		}
+
+		setInterval(getLocation, 1000);
+	</script>
+</head>
+    <body>
+
+    <p>This is simple location fetcher!</p>
+
+    <div id="demo"></div>
+</body>
+</html>
